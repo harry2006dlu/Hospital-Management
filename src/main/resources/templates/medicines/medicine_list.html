@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Quản Lý Thuốc (Medicine)</title>
+    <!-- Các link CSS này có thể đã có ở file layout chính, bạn không cần thêm nếu đã có -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Giả sử bạn cũng dùng AdminLTE CSS (nếu chưa có, file patient của bạn chạy tốt có thể vì file layout đã nhúng) -->
+    <!-- <link rel="stylesheet" href="path/to/adminlte.min.css"> -->
+</head>
+<body>
+    <!-- 
+      FRAGMENT QUẢN LÝ THUỐC
+      Đã sửa lại cấu trúc card cho giống với file patient_list.html
+    -->
+    <div th:fragment="medicine_list">
+        
+        <div class="card card-primary card-outline">
+            
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-pills mr-1"></i> <!-- Thêm icon cho đẹp -->
+                    Danh Sách Thuốc
+                </h3>
+                
+                <!-- Đưa nút "Thêm mới" vào card-tools giống như file patient -->
+                <div class="card-tools">
+                     <a th:href="@{/medicines/new}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus-circle"></i> Thêm Thuốc Mới
+                    </a>
+                </div>
+            </div> <!-- /.card-header -->
+            
+            <div class="card-body">
+                
+                <!-- Bọc bảng trong table-responsive để hiển thị tốt trên di động -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="table-dark"> <!-- Dùng table-dark cho nhất quán -->
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên Thuốc</th>
+                                <th>Nhà Sản Xuất</th>
+                                <th>Ngày Hết Hạn</th>
+                                <th>Liều Dùng</th>
+                                <th>Giá/Tồn kho</th> <!-- Bạn có thể tách làm 2 cột nếu cần -->
+                                <th>Tình Trạng</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dữ liệu mẫu (sẽ được thay thế bởi th:each) -->
+                            <tr th:each="medicine : ${medicines}">
+                                <td th:text="${medicine.id}">1</td>
+                                <td th:text="${medicine.name}">Paracetamol</td>
+                                <td th:text="${medicine.nhaSanXuat}">AstraZeneca</td>
+                                <td th:text="${#temporals.format(medicine.ngayHetHan, 'dd-MM-yyyy')}">15-12-2025</td> 
+                                <td th:text="${medicine.lieuDung}">1 viên/lần</td>
+                                <!-- Giả sử bạn muốn hiển thị cả giá và tồn kho -->
+                                <!-- 
+                                    <td th:text="${medicine.gia}">1000</td>
+                                    <td th:text="${medicine.tonKho}">100</td> 
+                                -->
+                                <!-- Hoặc gộp chung như file gốc -->
+                                <td th:text="${medicine.gia} + ' / ' + ${medicine.tonKho}">1000 / 100</td>
+                                <td th:text="${medicine.tinhTrang}">Còn</td>
+                                <td>
+                                    <a th:href="@{/medicines/edit/{id}(id=${medicine.id})}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-edit"></i> Sửa
+                                    </a>
+                                    <a th:href="@{/medicines/delete/{id}(id=${medicine.id})}" class="btn btn-sm btn-danger" 
+                                       onclick="return confirm('Bạn có chắc chắn muốn xóa thuốc này không?');">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </a>
+                                </td>
+                            </tr>
+                            
+                            <!-- Bạn có thể thêm 1-2 dòng dữ liệu mẫu cứng ở đây để test giao diện
+                            <tr>
+                                <td>2</td>
+                                <td>Amoxicillin</td>
+                                <td>Traphaco</td>
+                                <td>01-06-2026</td> 
+                                <td>2 viên/lần</td>
+                                <td>5000 / 50</td>
+                                <td>Còn</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Sửa</a>
+                                    <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Xóa</a>
+                                </td>
+                            </tr>
+                            -->
+                        </tbody>
+                    </table>
+                </div> <!-- /.table-responsive -->
+                
+            </div> <!-- /.card-body -->
+            
+            <!-- (Optional) Thêm phần footer cho card nếu muốn, ví dụ như phân trang -->
+            <!-- 
+            <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                </ul>
+            </div>
+            -->
+
+        </div> <!-- /.card -->
+        
+    </div> <!-- /.th:fragment -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="path/to/adminlte.min.js"></script> -->
+</body>
+</html>

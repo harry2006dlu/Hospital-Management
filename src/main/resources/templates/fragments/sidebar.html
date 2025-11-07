@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<aside th:fragment="sidebar" class="main-sidebar sidebar-dark-primary elevation-4">
+    <a th:href="@{/dashboard}" class="brand-link">
+        <img th:src="@{/dist/img/AdminLTELogo.png}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Hệ thống Quản lý BV</span>
+    </a>
+
+    <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img th:src="@{/dist/img/user2-160x160.jpg}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block">Tên người dùng</a>
+            </div>
+        </div>
+
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                
+                <li class="nav-item">
+                    <a th:href="@{/dashboard}" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Dashboard (Tổng quan)</p>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a th:href="@{/doctor}" class="nav-link">
+                        <i class="nav-icon fas fa-user-md"></i>
+                        <p>Quản Lý Bác Sĩ</p>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a th:href="@{/patients}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Quản Lý Bệnh Nhân</p>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a th:href="@{/appointments}" class="nav-link">
+                        <i class="nav-icon fas fa-calendar-alt"></i>
+                        <p>Quản Lý Lịch Hẹn</p>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a th:href="@{/medicines}" class="nav-link">
+                        <i class="nav-icon fas fa-pills"></i>
+                        <p>Quản Lý Thuốc</p>
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+        </div>
+    </aside>
+</html>

@@ -1,0 +1,96 @@
+<div th:fragment="dashboard_content">
+
+    <div class="row">
+        
+        <div class="col-lg-3 col-6">
+            <a th:href="@{/doctor}" class="small-box bg-info">
+                <div class="inner">
+                    <h3>Bác Sĩ</h3>
+                    <p>Quản lý thông tin & chuyên khoa</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="small-box-footer">
+                    Thao tác <i class="fas fa-arrow-circle-right"></i>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-6">
+            <a th:href="@{/patients}" class="small-box bg-success">
+                <div class="inner">
+                    <h3>Bệnh Nhân</h3>
+                    <p>Quản lý hồ sơ và tình trạng</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-bed"></i>
+                </div>
+                <div class="small-box-footer">
+                    Thao tác <i class="fas fa-arrow-circle-right"></i>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-6">
+            <a th:href="@{/appointments}" class="small-box bg-warning">
+                <div class="inner">
+                    <h3>Lịch Hẹn</h3>
+                    <p>Xếp lịch & theo dõi khám bệnh</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="small-box-footer">
+                    Thao tác <i class="fas fa-arrow-circle-right"></i>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-3 col-6">
+            <a th:href="@{/medicines}" class="small-box bg-danger">
+                <div class="inner">
+                    <h3>Thuốc</h3>
+                    <p>Quản lý kho và thông tin thuốc</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-tablets"></i>
+                </div>
+                <div class="small-box-footer">
+                    Thao tác <i class="fas fa-arrow-circle-right"></i>
+                </div>
+            </a>
+        </div>
+        </div>
+    <div class="row">
+        
+        <section class="col-lg-7 connectedSortable">
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Biểu đồ Tổng quan</h3>
+                </div>
+                <div class="card-body">
+                    <p>Đặt biểu đồ thống kê hàng tháng tại đây.</p>
+                    <canvas id="main-chart" style="height:250px;"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <section class="col-lg-5 connectedSortable">
+            <div class="card bg-gradient-success">
+                <div class="card-header border-0">
+                    <h3 class="card-title"><i class="fas fa-list-ul mr-1"></i> Nhiệm vụ Cần làm</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="todo-list" data-widget="todo-list">
+                        <li>
+                            <span class="text">Xem lại hồ sơ bệnh nhân mới</span>
+                            <small class="badge badge-danger"><i class="far fa-clock"></i> Hôm nay</small>
+                        </li>
+                        <li>
+                            <span class="text">Kiểm tra số lượng thuốc tồn kho</span>
+                            <small class="badge badge-info"><i class="far fa-clock"></i> Ngày mai</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+    </div>

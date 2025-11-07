@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${action == 'add'} ? 'Thêm Thuốc Mới' : 'Chỉnh Sửa Thuốc'"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="fragments/_navbar :: navbar"></div>
+
+    <div class="container mt-5">
+        <h2 th:text="${action == 'add'} ? 'Thêm Thuốc Mới' : 'Chỉnh Sửa Thuốc: ' + ${medicine.name}" class="mb-4"></h2>
+
+        <form th:action="@{/medicines/save}" th:object="${medicine}" method="post">
+            
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Tên Thuốc:</label>
+                <input type="text" th:field="*{name}" class="form-control" required/>
+            </div>
+            
+            <div class="mb-3">
+                <label for="nhaSanXuat" class="form-label">Nhà sản xuất:</label>
+                <input type="text" th:field="*{nhaSanXuat}" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label for="ngayHetHan" class="form-label">Ngày hết hạn:</label>
+                <input type="date" th:field="*{ngayHetHan}" class="form-control" required/>
+            </div>
+
+            <div class="mb-3">
+                <label for="lieuDung" class="form-label">Liều dùng:</label>
+                <input type="text" th:field="*{lieuDung}" class="form-control" />
+            </div>
+            
+            <div class="mb-3">
+                <label for="gia" class="form-label">Giá (hoặc Tồn kho):</label>
+                <input type="number" th:field="*{gia}" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label for="tinhTrang" class="form-label">Tình trạng:</label>
+                <select th:field="*{tinhTrang}" class="form-select">
+                    <option th:each="status : ${statusOptions}" th:value="${status}" th:text="${status}"></option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success" th:text="${action == 'add'} ? 'Thêm Thuốc' : 'Cập Nhật'"></button>
+            <a href="/medicines" class="btn btn-secondary">Hủy bỏ</a>
+        </form>
+    </div>
+</body>
+</html>
