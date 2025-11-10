@@ -35,6 +35,68 @@
                 </div>
             </div>
 
+            {% comment %} <div class="form-group">
+                <label>Tên Bệnh nhân</label>
+                <input id="patientNameInput" type="text" th:field="*{tenBenhNhan}" class="form-control" />
+            </div> {% endcomment %}
+
+            <div class="form-group">
+                <label>Bác sĩ Gợi ý (từ Graph DSA)</label>
+                <div id="recommendation-box" class="row" style="padding: 10px; border: 1px dashed #ccc; border-radius: 5px; min-height: 50px;">
+                    <span class="text-muted">Hãy nhập tên bệnh nhân để xem gợi ý...</span>
+                </div>
+            </div>
+
+            <script>
+            $(document).ready(function() {
+                
+                // Bắt sự kiện khi người dùng gõ xong và RỜI khỏi ô input
+                $('#patientNameInput').on('blur', function() {
+                    var patientName = $(this).val();
+                    var recommendationBox = $('#recommendation-box');
+                    
+                    if (!patientName || patientName.trim() === '') {
+                        recommendationBox.html('<span class="text-muted">Nhập tên bệnh nhân để xem gợi ý...</span>');
+                        return;
+                    }
+                    
+                    // Hiển thị loading
+                    recommendationBox.html('<span class="text-info">Đang chạy thuật toán Graph...</span>');
+
+                    // Gọi API (Bước 2)
+                    // Dùng encodeURIComponent để mã hóa tên (quan trọng)
+                    $.ajax({
+                        url: '/api/recommend?patientName=' + encodeURIComponent(patientName),
+                        type: 'GET',
+                        success: function(doctors) {
+                            // Xóa loading
+                            recommendationBox.empty();
+                            
+                            if (doctors.length === 0) {
+                                recommendationBox.html('<span class="text-muted">Không tìm thấy gợi ý nào (bệnh nhân mới).</span>');
+                                return;
+                            }
+
+                            // Xây dựng HTML cho mỗi bác sĩ gợi ý
+                            doctors.forEach(function(doctor) {
+                                // Dùng style "callout" của AdminLTE cho đẹp
+                                var html = '<div class="col-md-4">' +
+                                        '  <div class="callout callout-info">' +
+                                        '    <h5>' + doctor.hoVaTen + '</h5>' +
+                                        '    <p>Chuyên khoa: ' + doctor.chuyenKhoa + '</p>' +
+                                        '  </div>' +
+                                        '</div>';
+                                recommendationBox.append(html);
+                            });
+                        },
+                        error: function() {
+                            recommendationBox.html('<span class="text-danger">Lỗi khi chạy thuật toán (kiểm tra Console).</span>');
+                        }
+                    });
+                });
+            });
+            </script>
+
             <div class="mb-3">
                 <label for="nguyenNhan" class="form-label">Nguyên nhân:</label>
                 <textarea th:field="*{nguyenNhan}" class="form-control"></textarea>

@@ -1,4 +1,5 @@
 package com.hospital.hospital_web.controller;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hospital.hospital_web.model.Doctor;
 import com.hospital.hospital_web.service.DoctorService;
@@ -27,17 +30,49 @@ public class DoctorController {
         return Arrays.asList("Tim mạch", "Nội tiết", "Da liễu", "Nhi khoa", "Phẫu thuật", "Nhãn Khoa", "Hồi Sức", "Khác");
     }
 
+    @GetMapping("/search-test/{id}")
+    @ResponseBody // Trả về JSON thay vì HTML
+    public Doctor testHashMapSearch(@PathVariable Long id) {
+        
+        // Gọi phương thức DSA mới của bạn
+        Doctor foundDoctor = doctorService.findDoctorByIdUsingHashMap(id);
+
+        if (foundDoctor == null) {
+            // Trả về một đối tượng rỗng (hoặc thông báo lỗi)
+            return new Doctor(); 
+        }
+        return foundDoctor;
+    }
+
     // Hiển thị danh sách bác sĩ (Thay thế màn hình DoctorsPage chính)
     // URL: /doctor
     @GetMapping
-    public String listDoctors(Model model) {
-        List<Doctor> doctors = doctorService.findAll();
-        // Gửi danh sách bác sĩ và các tùy chọn ComboBox/Radio Button tới View
-        model.addAttribute("doctors", doctors);
+    public String listDoctors(Model model, 
+                                @RequestParam(name = "id", required = false) Long id) {
+        
+        List<Doctor> doctorsToShow = new ArrayList<>();
+
+        if (id != null) {
+            // --- HÀNH ĐỘNG TÌM KIẾM (DSA) ---
+            // Nếu người dùng cung cấp ID, chúng ta tìm bằng HashMap O(1)
+            System.out.println("--- [DSA] UI Request: Tìm kiếm ID: " + id + " bằng HashMap ---");
+            Doctor foundDoctor = doctorService.findDoctorByIdUsingHashMap(id);
+            if (foundDoctor != null) {
+                doctorsToShow.add(foundDoctor); // Thêm 1 bác sĩ duy nhất vào danh sách
+            }
+            // Nếu không tìm thấy, danh sách doctorsToShow sẽ rỗng (0 phần tử)
+            
+        } else {
+            // --- HÀNH ĐỘNG MẶC ĐỊNH ---
+            // Nếu không có ID, lấy tất cả bác sĩ (như cũ)
+            doctorsToShow = doctorService.findAll();
+        }
+
+        // Gửi danh sách bác sĩ (hoặc 1, hoặc 0) tới View
+        model.addAttribute("doctors", doctorsToShow);
         model.addAttribute("specialties", getSpecialties());
-        //chèn vào layout
         model.addAttribute("content", "doctor/doctor_list");
-        return "layout"; // Trả về file HTML: src/main/resources/templates/doctor/doctor_list.html
+        return "layout"; 
     }
 
     // Hiển thị Form Thêm Bác sĩ Mới (Thay thế việc mở DynamicForm ở chế độ Create)
